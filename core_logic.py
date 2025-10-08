@@ -38,17 +38,20 @@ def generate_quiz_from_pdf(pdf_path, number_of_questions):
 
         # 4. Define the prompt template
         template = """
-        You are a helpful assistant that generates quiz questions based on a provided text.
-        Generate {number} multiple-choice questions based on the following context.
-        For each question, provide 4 options (A, B, C, D) and indicate the correct answer.
-        Format the output as a single string where each question is separated by a newline.
+        You are an expert quiz maker. Based on the context provided, generate {number} multiple-choice questions.
+        The output should be a JSON array, where each element is an object with the following structure:
+        {{
+          "question": "The question text",
+          "options": ["Option A text", "Option B text", "Option C text", "Option D text"],
+          "answer": "The full text of the correct option"
+        }}
+        Do not include any other text or explanations outside of the JSON array.
 
         Context:
         {context}
-
-        Questions:
         """
         prompt = ChatPromptTemplate.from_template(template)
+
 
         # 5. Initialize the LLM
         #llm = ChatOpenAI(model_name="gpt-3.5-turbo", temperature=0.4)               # Uncomment if using OpenAI    
