@@ -45,8 +45,6 @@ Interested in running the app on your own machine? Here’s how:
 
 - Git
 
-- An API key from OpenAI (must have a payment method on file)
-
 - An API key from Google AI Studio
 
 2. **Clone the Repository**
@@ -77,7 +75,6 @@ This project requires API keys to function. Create a file named .env in the root
 6. Now, open the .env file and add your secret keys. It should look like this:
    
    ````bash
-   OPENAI_API_KEY="sk-YourOpenAIKeyHere"
    GOOGLE_API_KEY="AIzaSy-YourGoogleKeyHere"
 
 7. **Run the App!**
