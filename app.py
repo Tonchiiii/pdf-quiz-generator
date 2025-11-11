@@ -11,7 +11,6 @@ st.set_page_config(
 )
 
 # --- Session State Initialization ---
-# This is crucial for remembering data across user interactions
 if 'quiz_data' not in st.session_state:
     st.session_state.quiz_data = None
 if 'user_answers' not in st.session_state:
@@ -34,7 +33,6 @@ with st.sidebar:
         value=5
     )
     
-    # --- UPDATED PAGE RANGE INPUTS ---
     st.write("Filter pages (optional):")
     
     col1, col2 = st.columns(2)
@@ -54,18 +52,18 @@ with st.sidebar:
             placeholder="Last",
             step=1
         )
-    # -----------------------------------
     
     if st.button("Generate Quiz"):
         if uploaded_file is not None:
-            # --- Validation for page range ---
             if start_page_input and end_page_input and start_page_input > end_page_input:
                 st.error("Error: 'Start page' must be less than or equal to 'End page'.")
                 st.stop() # Stop execution
-            # -----------------------------------
 
-            # Create a temporary directory if it doesn't exist
-            temp_dir = "temp"
+            # --- MODIFIED FOR VERCEL ---
+            # Create a temporary directory in the *only* writable location
+            temp_dir = "/tmp/quiz_temp"
+            # ---------------------------
+            
             if not os.path.exists(temp_dir):
                 os.makedirs(temp_dir)
             
@@ -76,7 +74,6 @@ with st.sidebar:
 
             with st.spinner("Generating your quiz... This may take a moment."):
                 try:
-                    # Call the core logic function with new page arguments
                     quiz_text = generate_quiz_from_pdf(
                         temp_file_path, 
                         num_questions, 
@@ -84,20 +81,17 @@ with st.sidebar:
                         end_page=end_page_input
                     )
                     
-                    # Handle potential errors from core_logic
                     if quiz_text.startswith("Error:"):
                         st.error(quiz_text)
                         st.session_state.quiz_data = None
                         st.stop()
 
-                    # Clean the AI's output (in case it adds ```json ... ```)
                     if quiz_text.startswith("```json"):
                         quiz_text = quiz_text[7:-4].strip()
                     
-                    # Parse the JSON
                     st.session_state.quiz_data = json.loads(quiz_text)
-                    st.session_state.user_answers = {} # Reset answers
-                    st.session_state.submitted = False # Reset submission state
+                    st.session_state.user_answers = {}
+                    st.session_state.submitted = False
                     st.success("Quiz generated! You can now take the quiz.")
 
                 except json.JSONDecodeError:
@@ -107,7 +101,6 @@ with st.sidebar:
                     st.error(f"An unexpected error occurred: {e}")
                     st.session_state.quiz_data = None
                 finally:
-                    # Clean up the temporary file
                     if os.path.exists(temp_file_path):
                         os.remove(temp_file_path)
         else:
@@ -122,7 +115,6 @@ if st.session_state.quiz_data:
         for i, q in enumerate(st.session_state.quiz_data):
             st.subheader(f"Question {i+1}: {q['question']}")
             
-            # Use index=None to ensure no default answer is selected
             user_answers[i] = st.radio(
                 "Choose your answer:", 
                 q['options'], 
@@ -142,7 +134,7 @@ if st.session_state.submitted:
     score = 0
     for i, q in enumerate(st.session_state.quiz_data):
         correct_answer = q['answer']
-        user_answer = st.session_state.user_answers.get(i) # Use .get() for safety
+        user_answer = st.session_state.user_answers.get(i)
         
         st.subheader(f"Question {i+1}: {q['question']}")
         
@@ -160,6 +152,5 @@ if st.session_state.submitted:
     st.title(f"Your final score: {score}/{len(st.session_state.quiz_data)}")
 
 else:
-    # Show a message on the main page if no file is uploaded yet
     if uploaded_file is None:
         st.info("Upload a PDF and click 'Generate Quiz' in the sidebar to begin.")
