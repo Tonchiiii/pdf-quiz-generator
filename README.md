@@ -51,7 +51,7 @@ Interested in running the app on your own machine? Here’s how:
 
 2. **Clone the Repository**
    ````bash
-   git clone https://github.com/YOUR-USERNAME/pdf-quiz-generator.git
+   git clone https://github.com/Tonchiiii/pdf-quiz-generator.git
    cd pdf-quiz-generator
 
 3. **Set Up a Virtual Environment**
