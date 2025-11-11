@@ -2,8 +2,6 @@
 # 🧠 PDF Quiz Generator
 An intelligent web application that automatically generates interactive quizzes from any PDF document. This tool allows users to upload a PDF, specify a page range, and instantly receive a custom quiz to test their knowledge.
 
-(Tip: Take a screenshot of your app, upload it to a site like imgur.com, and paste the link here.)
-
 ---
 
 ## 🚀 Features
