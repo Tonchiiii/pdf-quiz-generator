@@ -37,7 +37,7 @@ An intelligent web application that automatically generates interactive quizzes 
 
 ---
 
-##🏃 How to Run This Project Locally
+## 🏃 How to Run This Project Locally
 Interested in running the app on your own machine? Here’s how:
 
 1. **Prerequisites**
@@ -74,12 +74,13 @@ This project requires API keys to function. Create a file named .env in the root
    ````bash
    touch .env
 
-Now, open the .env file and add your secret keys. It should look like this:
-   # .env
+6. Now, open the .env file and add your secret keys. It should look like this:
+   
+   ````bash
    OPENAI_API_KEY="sk-YourOpenAIKeyHere"
    GOOGLE_API_KEY="AIzaSy-YourGoogleKeyHere"
 
-6. **Run the App!**
+7. **Run the App!**
 You're all set. Use Streamlit to run the application.
 
    ````bash
